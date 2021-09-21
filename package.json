@@ -13,7 +13,10 @@
   "dependencies": {
     "cookie-encrypter": "^1.0.1",
     "cookie-parser": "^1.4.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "jquery": "^3.6.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-icon": "^2.3.3"
   },
   "devDependencies": {
     "dotenv": "^10.0.0"

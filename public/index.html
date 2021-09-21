@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/modules/semantic/css" />
+    <title>Stripe Cart</title>
+  </head>
+  <body>
+    <div class="ui purple three item menu">
+      <a class="item active"><i class="credit card icon"></i>Shop</a>
+      <a class="item"><i class="dollar sign icon"></i>Cart</a>
+      <a class="item"><i class="power off icon"></i>Logout</a>
+    </div>
+    <div class="ui grid">
+      <div class="sixteen wide column center aligned">
+        <h2 class="ui icon header">
+          <i class="purple credit card icon"></i>
+          <div class="content">
+            S t r i p e C a r t
+            <div class="sub header">
+              Free yourself from swiping when shopping.
+            </div>
+          </div>
+        </h2>
+      </div>
+    </div>
+    <div class="ui container">
+      <div class="ui four cards">
+        <div class="card" style="visibility: hidden"></div>
+        <div class="card">
+          <div class="image">
+            <img src="./img.jpg" />
+          </div>
+          <div class="content">
+            <div class="header">Elliot Fu</div>
+            <div class="description">
+              Elliot Fu is a film-maker from New York.
+            </div>
+          </div>
+          <div class="extra">
+            Rating:
+            <div class="ui star rating" data-rating="1"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="image">
+            <img src="./img.jpg" />
+          </div>
+          <div class="content">
+            <div class="header">Elliot Fu</div>
+            <div class="description">
+              Elliot Fu is a film-maker from New York.
+            </div>
+          </div>
+          <div class="extra">
+            Rating:
+            <div class="ui star rating" data-rating="4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui horizontal divider"></div>
+    <div class="ui container">
+      <div class="ui items">
+        <div class="item">
+          <div class="ui small image">
+            <img src="./img.jpg" />
+          </div>
+          <div class="content">
+            <div class="header">Arrowhead Valley Camp</div>
+            <div class="meta">
+              <span class="price">$1200</span>
+              <span class="stay">1 Month</span>
+              <span class="stay"
+                ><div class="ui star rating" data-rating="4"></div
+              ></span>
+            </div>
+            <div class="description">
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Consequatur iusto quae a ex ipsam, suscipit fugit ea facere
+                possimus sunt dignissimos vitae, rem nobis dolore labore omnis
+                beatae cumque fugiat asperiores veritatis. Exercitationem
+                aliquid, quibusdam natus quisquam eius vel!
+              </p>
+            </div>
+            <div class="extra">
+              <div class="ui action input">
+                <button class="ui teal icon button">
+                  <i class="minus icon"></i>
+                </button>
+                <input
+                  type="text"
+                  style="width: 4em; color: purple"
+                  value="100"
+                  disabled
+                />
+                <button class="ui teal icon button">
+                  <i class="plus icon"></i>
+                </button>
+              </div>
+              <div class="ui right floated right action input">
+                <input
+                  type="text"
+                  style="width: 6em; color: purple"
+                  value="$52.03"
+                  disabled
+                />
+                <button class="ui teal labeled icon button">
+                  <i class="cart icon"></i>
+                  Checkout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <script src="/modules/jquery"></script>
+    <script src="/modules/semantic/js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $(".rating").rating();
+      });
+    </script>
+  </body>
+</html>
