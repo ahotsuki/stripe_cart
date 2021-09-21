@@ -1,0 +1,14 @@
+@url = http://localhost:3000
+
+###
+
+GET {{url}}
+
+###
+GET {{url}}/set
+
+###
+GET {{url}}/get
+
+###
+GET {{url}}/clear/testplaincookie1
