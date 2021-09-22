@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/modules/semantic/css" />
+    <title>Stripe Cart</title>
+  </head>
+  <body>
+    <div class="ui purple three item menu">
+      <a class="item" href="/"><i class="credit card icon"></i>Shop</a>
+      <a class="item active"><i class="dollar sign icon"></i>Cart</a>
+      <a class="item"><i class="power off icon"></i>Logout</a>
+    </div>
+    <div class="ui container">
+      <div class="ui items">
+        <div class="item">
+          <div class="ui small image">
+            <img src="./nyancat.jpg" />
+          </div>
+          <div class="content">
+            <div class="header">Arrowhead Valley Camp</div>
+            <div class="meta">
+              <span class="price">$1200</span>
+              <span class="stay"
+                ><div class="ui star rating" data-rating="4"></div
+              ></span>
+            </div>
+            <div class="description">
+              <p>A fake nyan cat product.</p>
+            </div>
+            <div class="extra">
+              <div class="ui action input">
+                <button class="ui teal icon button">
+                  <i class="minus icon"></i>
+                </button>
+                <input
+                  type="text"
+                  style="width: 4em; color: purple"
+                  value="100"
+                  disabled
+                />
+                <button class="ui teal icon button">
+                  <i class="plus icon"></i>
+                </button>
+              </div>
+              <dov class="ui action input right floated">
+                <button class="ui teal button" disabled>Total:</button>
+                <input
+                  type="text"
+                  style="width: 4em; color: purple"
+                  value="100"
+                  disabled
+                />
+              </dov>
+            </div>
+          </div>
+        </div>
+        <form action="/create-checkout-session" method="POST">
+          <button
+            class="ui teal labeled icon button"
+            type="submit"
+            id="checkout-button"
+          >
+            <i class="cart icon"></i>
+            Checkout
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="/modules/jquery"></script>
+    <script src="/modules/semantic/js"></script>
+  </body>
+</html>
