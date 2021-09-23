@@ -144,13 +144,76 @@ app.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card"],
       mode: "payment",
       success_url: `http://localhost:3000/success.html`,
-      cancel_url: `http://localhost:3000/cart.html`,
+      cancel_url: `http://localhost:3000/cancel.html`,
     });
+    user.session = session.id;
+    const update = DB.updateUser(user);
+    res.cookie("x-auth", update, cookieParams);
     res.redirect(303, session.url);
   } catch (ex) {
     console.log(ex);
     res.end();
   }
+});
+
+app.get("/retrieve-checkout-session", async (req, res) => {
+  try {
+    const user = req.signedCookies["x-auth"];
+    if (!user.session) return res.end();
+    const session = await stripe.checkout.sessions.retrieve(user.session);
+    res.send({ url: session.url });
+  } catch (ex) {
+    console.log(ex);
+    res.end();
+  }
+});
+
+app.get("/cancel-checkout-session", (req, res) => {
+  const user = req.signedCookies["x-auth"];
+  user.session = "";
+  const update = DB.updateUser(user);
+  console.log(update);
+  res.cookie("x-auth", update, cookieParams);
+  res.end();
+});
+
+app.get("/success-checkout-session", async (req, res) => {
+  const user = req.signedCookies["x-auth"];
+  const session = await stripe.checkout.sessions.retrieve(user.session);
+  user.session = "";
+  const update = DB.updateUser(user);
+  res.cookie("x-auth", update, cookieParams);
+  const lineItems = [];
+  stripe.checkout.sessions.listLineItems(
+    session.id,
+    { limit: 5 },
+    function (err, li) {
+      if (err) return console.error(err);
+      li.data.forEach((i) => {
+        const temp = {};
+        temp.id = i.id;
+        temp.description = i.description;
+        temp.price = i.price.unit_amount;
+        temp.currency = i.price.currency;
+        temp.quantity = i.quantity;
+        lineItems.push(temp);
+      });
+    }
+  );
+  const paymentIntent = await stripe.paymentIntents.retrieve(
+    session.payment_intent
+  );
+  const purchase = {
+    customer_id: user.id,
+    customer_email: session.customer_details.email,
+    session_id: session.id,
+    price: paymentIntent.amount,
+    receipt: paymentIntent.charges.data[0].receipt_url,
+    card: paymentIntent.charges.data[0].payment_method_details.card.last4,
+    items: lineItems,
+  };
+  DB.addPurchase(purchase);
+  res.send(purchase);
 });
 
 const PORT = 3000;

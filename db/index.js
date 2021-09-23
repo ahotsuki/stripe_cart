@@ -3,6 +3,7 @@ const fs = require("fs");
 
 const productsDB = path.join(__dirname, "products.json");
 const usersDB = path.join(__dirname, "users.json");
+const purchasesDB = path.join(__dirname, "purchases.json");
 
 function readDB(db) {
   try {
@@ -33,12 +34,34 @@ function getUsers() {
   return readDB(usersDB);
 }
 
+function updateUser(user) {
+  const data = getUsers();
+  const index = data.findIndex((item) => item.id === user.id);
+  data[index] = user;
+  writeDB(usersDB, data);
+  return user;
+}
+
 function getProducts() {
   return readDB(productsDB);
+}
+
+function getPurchases() {
+  return readDB(purchasesDB);
+}
+
+function addPurchase(item) {
+  const data = getPurchases();
+  data.push(item);
+  writeDB(purchasesDB, data);
+  return item;
 }
 
 module.exports = {
   getProducts,
   addUser,
   getUsers,
+  updateUser,
+  getPurchases,
+  addPurchase,
 };

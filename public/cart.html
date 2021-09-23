@@ -5,6 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/modules/semantic/css" />
+    <script>
+      fetch("/cookie/get")
+        .then((res) => res.json())
+        .then((data) => {
+          if (!data.signed["x-auth"]) window.location = "/login.html";
+        });
+      fetch("/retrieve-checkout-session")
+        .then((response) => response.json())
+        .then((data) => {
+          window.location = data.url;
+        })
+        .catch((ex) => console.error(ex));
+    </script>
     <title>Stripe Cart</title>
   </head>
   <body>
@@ -67,6 +80,29 @@
             Checkout
           </button>
         </form>
+      </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="ui container">
+      <div class="ui feed">
+        <div class="event" onclick="alert('yes')" style="cursor: pointer">
+          <div class="label">
+            <i class="dollar green icon"></i>
+          </div>
+          <div class="content">
+            <div class="summary">
+              <a class="user"> You </a> made a purchase
+              <div class="date">1 Hour Ago</div>
+            </div>
+            <div class="meta">
+              <a class="like"> <i class="dollar icon"></i>100</a>
+              <a class="like"> <i class="question circle icon"></i> Details </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

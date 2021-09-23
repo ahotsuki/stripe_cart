@@ -1,9 +1,3 @@
-fetch("/cookie/get")
-  .then((res) => res.json())
-  .then((data) => {
-    if (!data.signed["x-auth"]) window.location = "/login.html";
-  });
-
 document.getElementById("product-btn1").onclick = () => {
   document
     .getElementById("display-img")
