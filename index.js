@@ -132,6 +132,7 @@ app.get("/cookie/clear/:name", (req, res) => {
 
 app.post("/create-checkout-session", async (req, res) => {
   try {
+    const user = req.signedCookies["x-auth"];
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
@@ -139,11 +140,11 @@ app.post("/create-checkout-session", async (req, res) => {
           quantity: 1,
         },
       ],
-      customer: "cus_KHN7c9t9pzHN9Z",
+      customer: user.id,
       payment_method_types: ["card"],
       mode: "payment",
       success_url: `http://localhost:3000/success.html`,
-      cancel_url: `http://localhost:3000/cancel.html`,
+      cancel_url: `http://localhost:3000/cart.html`,
     });
     res.redirect(303, session.url);
   } catch (ex) {
