@@ -1,9 +1,21 @@
 require("dotenv").config();
+
+const bcrypt = require("bcrypt");
+const saltRounds = 5;
+// const pd = "hello";
+
+// bcrypt.hash(pd, saltRounds, (err, hash) => {
+//   if (err) return console.error(err);
+//   console.log(hash);
+//   bcrypt.compare("hola", hash, (e, r) => console.log(r));
+// });
+
 const path = require("path");
 const express = require("express");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const cookieParser = require("cookie-parser");
 const cookieEncrypter = require("cookie-encrypter");
+const DB = require("./db/index");
 const app = express();
 
 //
@@ -18,6 +30,11 @@ const ICON_PATH = path.join(
   "assets",
   "fonts"
 );
+const cookieParams = {
+  httpOnly: true,
+  signed: true,
+  maxAge: 3600000, //1000 is 1 second
+};
 
 //
 //
@@ -70,22 +87,39 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.get("/cookie/set", (req, res) => {
-  const cookieParams = {
-    httpOnly: true,
-    signed: true,
-    maxAge: 10000, //1000 is 1 second
-  };
-  res.cookie("testsigned", "mytextisencrypted", cookieParams);
-  res.cookie("testplain", "mytextisnotencrypted", { plain: true });
-  res.end("new cookies set");
+app.post("/api/signup", async (req, res) => {
+  console.log(req.body);
+  const customer = await stripe.customers.create({
+    email: req.body.email,
+  });
+  // console.log(customer); // save customer with customer.id
+  bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
+    if (err) return console.error(err);
+    const data = { id: customer.id, email: req.body.email, password: hash };
+    DB.addUser(data);
+    res.cookie("x-auth", data, cookieParams);
+    res.end("signed");
+  });
+});
+
+app.post("/api/login", (req, res) => {
+  const user = req.body;
+  console.log(user);
+  const USERS = DB.getUsers();
+  console.log(USERS);
+  const index = USERS.findIndex((item) => item.email === user.email);
+  if (index === -1) return res.status(404).end();
+  bcrypt.compare(user.password, USERS[index].password, (err, r) => {
+    if (!r) return res.send({ message: "Wrong password!" });
+    res.cookie("x-auth", USERS[index], cookieParams);
+    res.send({});
+  });
 });
 
 app.get("/cookie/get", (req, res) => {
   const plain = req.cookies;
   const signed = req.signedCookies;
   res.send({
-    plain,
     signed,
   });
 });
@@ -105,6 +139,7 @@ app.post("/create-checkout-session", async (req, res) => {
           quantity: 1,
         },
       ],
+      customer: "cus_KHN7c9t9pzHN9Z",
       payment_method_types: ["card"],
       mode: "payment",
       success_url: `http://localhost:3000/success.html`,

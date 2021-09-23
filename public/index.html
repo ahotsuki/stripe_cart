@@ -31,14 +31,16 @@
         <div class="card" style="visibility: hidden"></div>
         <div class="card">
           <div class="image">
-            <img src="./nyancat.jpg" />
+            <img src="./nyancat.jpg" id="product-img1" />
           </div>
           <div class="content">
-            <div class="header">Savage Nyan Cat</div>
-            <div class="description">A fake nyan cat product.</div>
+            <div class="header" id="product-name1">Savage Nyan Cat</div>
+            <div class="description" id="product-desc1">
+              A fake nyan cat product.
+            </div>
           </div>
           <div class="extra ui center aligned">
-            <button class="ui teal labeled icon button">
+            <button class="ui teal labeled icon button" id="product-btn1">
               <i class="cart icon"></i>
               Details
             </button>
@@ -46,14 +48,16 @@
         </div>
         <div class="card">
           <div class="image">
-            <img src="./turtle.jpg" />
+            <img src="./turtle.jpg" id="product-img2" />
           </div>
           <div class="content">
-            <div class="header">Surprised turtle</div>
-            <div class="description">A fake cute image art product.</div>
+            <div class="header" id="product-name2">Surprised turtle</div>
+            <div class="description" id="product-desc2">
+              A fake cute image art product.
+            </div>
           </div>
           <div class="extra ui center aligned">
-            <button class="ui teal labeled icon button">
+            <button class="ui teal labeled icon button" id="product-btn2">
               <i class="cart icon"></i>
               Details
             </button>
@@ -66,10 +70,10 @@
       <div class="ui items">
         <div class="item">
           <div class="ui small image">
-            <img src="./nyancat.jpg" />
+            <img src="./nyancat.jpg" id="display-img" />
           </div>
           <div class="content">
-            <div class="header">Savage nyan cat</div>
+            <div class="header" id="display-name">Savage nyan cat</div>
             <div class="meta">
               <span class="price">$1200</span>
               <span class="stay"
@@ -77,7 +81,7 @@
               ></span>
             </div>
             <div class="description">
-              <p>A fake nyan cat product.</p>
+              <p id="display-desc">A fake nyan cat product.</p>
             </div>
             <div class="extra">
               <div class="ui action input">
@@ -119,5 +123,6 @@
         $(".rating").rating();
       });
     </script>
+    <script src="./index.js"></script>
   </body>
 </html>

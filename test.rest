@@ -12,3 +12,12 @@ GET {{url}}/get
 
 ###
 GET {{url}}/clear/testplaincookie1
+
+###
+POST {{url}}/api/signup
+content-type: application/json
+
+{
+    "email": "sample",
+    "password": "sample"
+}
