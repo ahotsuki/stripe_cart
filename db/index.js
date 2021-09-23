@@ -42,6 +42,13 @@ function updateUser(user) {
   return user;
 }
 
+function userExists(email) {
+  const data = getUsers();
+  const index = data.findIndex((item) => item.email === email);
+  if (index === -1) return false;
+  return true;
+}
+
 function getProducts() {
   return readDB(productsDB);
 }
@@ -64,4 +71,5 @@ module.exports = {
   updateUser,
   getPurchases,
   addPurchase,
+  userExists,
 };

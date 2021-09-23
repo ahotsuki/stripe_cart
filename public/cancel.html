@@ -1,16 +1,29 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <title>Checkout canceled</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/modules/semantic/css" />
+    <title>Stripe Cart</title>
   </head>
   <body>
-    <section>
+    <br />
+    <div class="ui container">
+      <h1>Your payment has been canceled.</h1>
       <p>
-        Forgot to add something to your cart? Shop around then come back to pay!
+        Forgot to add something on your cart? Add it now and come back again.
       </p>
-    </section>
+      <a href="/cart.html">
+        <button class="ui teal labeled icon button">
+          <i class="cart icon"></i>
+          Back to cart
+        </button>
+      </a>
+    </div>
 
-    <script>
-      fetch("/cancel-checkout-session").catch((ex) => console.error(ex));
-    </script>
+    <script src="./login.js"></script>
+    <script src="/modules/jquery"></script>
+    <script src="/modules/semantic/js"></script>
   </body>
 </html>

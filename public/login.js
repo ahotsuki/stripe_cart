@@ -23,7 +23,7 @@ signupBtn.onclick = () => {
         signupBtn.classList.remove("loading");
         email.value = "";
         password.value = "";
-        window.location = "/";
+        window.history.back();
       } else {
         if (form.classList.length < 4) form.classList.add("error");
         signupBtn.classList.remove("loading");
@@ -63,7 +63,7 @@ loginBtn.onclick = () => {
         loginBtn.classList.remove("loading");
         if (!data) return alert("user not found");
         if (data.message) return alert(data.message);
-        window.location = "/";
+        window.history.back();
       });
   } else {
     loginBtn.classList.remove("loading");

@@ -14,6 +14,9 @@ GET {{url}}/get
 GET {{url}}/clear/testplaincookie1
 
 ###
+GET {{url}}/api/products
+
+###
 POST {{url}}/api/signup
 content-type: application/json
 

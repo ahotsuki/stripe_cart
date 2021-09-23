@@ -88,7 +88,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/signup", async (req, res) => {
-  console.log(req.body);
+  if (DB.userExists(req.body.email)) return res.status(400).end("user exists");
   const customer = await stripe.customers.create({
     email: req.body.email,
   });
@@ -117,11 +117,8 @@ app.post("/api/login", (req, res) => {
 });
 
 app.get("/cookie/get", (req, res) => {
-  const plain = req.cookies;
-  const signed = req.signedCookies;
-  res.send({
-    signed,
-  });
+  const signed = req.signedCookies["x-auth"];
+  res.send(signed ? signed : {});
 });
 
 app.get("/cookie/clear/:name", (req, res) => {
@@ -131,15 +128,23 @@ app.get("/cookie/clear/:name", (req, res) => {
 });
 
 app.post("/create-checkout-session", async (req, res) => {
+  const signed = req.signedCookies["x-auth"];
+  const body = req.body;
+  if (!signed) return res.send({ url: "/login.html" });
+  const line = [];
+  body.forEach((el) => {
+    line.push({ price: el.price_id, quantity: el.quantity });
+  });
   try {
     const user = req.signedCookies["x-auth"];
     const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price: "price_1JcUrcFayxrrdcjLfwmE0549",
-          quantity: 1,
-        },
-      ],
+      line_items: line,
+      // [
+      //   {
+      //     price: "price_1JcUrcFayxrrdcjLfwmE0549",
+      //     quantity: 1,
+      //   },
+      // ],
       customer: user.id,
       payment_method_types: ["card"],
       mode: "payment",
@@ -149,24 +154,61 @@ app.post("/create-checkout-session", async (req, res) => {
     user.session = session.id;
     const update = DB.updateUser(user);
     res.cookie("x-auth", update, cookieParams);
-    res.redirect(303, session.url);
-  } catch (ex) {
-    console.log(ex);
-    res.end();
-  }
-});
-
-app.get("/retrieve-checkout-session", async (req, res) => {
-  try {
-    const user = req.signedCookies["x-auth"];
-    if (!user.session) return res.end();
-    const session = await stripe.checkout.sessions.retrieve(user.session);
     res.send({ url: session.url });
   } catch (ex) {
     console.log(ex);
     res.end();
   }
 });
+
+app.get("/api/purchases", (req, res) => {
+  const user = req.signedCookies["x-auth"];
+  if (!user) return res.send({});
+  const purchases = DB.getPurchases();
+  const data = purchases.filter((p) => p.customer_id === user.id);
+  res.send(data);
+});
+
+app.get("/api/products", async (req, res) => {
+  const products = DB.getProducts();
+  try {
+    const r1 = await stripe.products.retrieve(products[0].id);
+    const r2 = await stripe.products.retrieve(products[1].id);
+    const price1 = await stripe.prices.retrieve(products[0].price);
+    const p1 = {
+      id: r1.id,
+      name: r1.name,
+      description: r1.description,
+      img: r1.images[0],
+      price_id: products[0].price,
+      price: price1.unit_amount / 100,
+    };
+    const price2 = await stripe.prices.retrieve(products[1].price);
+    const p2 = {
+      id: r2.id,
+      name: r2.name,
+      description: r2.description,
+      img: r2.images[0],
+      price_id: products[1].price,
+      price: price2.unit_amount / 100,
+    };
+    res.send([p1, p2]);
+  } catch (ex) {
+    console.error(ex);
+  }
+});
+
+// app.get("/retrieve-checkout-session", async (req, res) => {
+//   try {
+//     const user = req.signedCookies["x-auth"];
+//     if (!user.session) return res.end();
+//     const session = await stripe.checkout.sessions.retrieve(user.session);
+//     res.send({ url: session.url });
+//   } catch (ex) {
+//     console.log(ex);
+//     res.end();
+//   }
+// });
 
 app.get("/cancel-checkout-session", (req, res) => {
   const user = req.signedCookies["x-auth"];

@@ -6,17 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/modules/semantic/css" />
     <script>
-      fetch("/cookie/get")
-        .then((res) => res.json())
-        .then((data) => {
-          if (!data.signed["x-auth"]) window.location = "/login.html";
-        });
-      fetch("/retrieve-checkout-session")
-        .then((response) => response.json())
-        .then((data) => {
-          window.location = data.url;
-        })
-        .catch((ex) => console.error(ex));
+      // fetch("/retrieve-checkout-session")
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     window.location = data.url;
+      //   })
+      //   .catch((ex) => console.error(ex));
     </script>
     <title>Stripe Cart</title>
   </head>
@@ -24,11 +19,16 @@
     <div class="ui purple three item menu">
       <a class="item" href="/"><i class="credit card icon"></i>Shop</a>
       <a class="item active"><i class="dollar sign icon"></i>Cart</a>
-      <a class="item"><i class="power off icon"></i>Logout</a>
+      <a class="item" id="auth-btn"><i class="power off icon"></i>Logout</a>
     </div>
-    <div class="ui container">
-      <div class="ui items">
-        <div class="item">
+
+    <div class="ui container" id="empty-container">
+      <h1>Wow, such empty.</h1>
+    </div>
+
+    <div class="ui container" id="item-container">
+      <div class="ui items" id="item-list">
+        <!-- <div class="item">
           <div class="ui small image">
             <img src="./nyancat.jpg" />
           </div>
@@ -69,25 +69,29 @@
               </dov>
             </div>
           </div>
-        </div>
-        <form action="/create-checkout-session" method="POST">
+        </div> -->
+      </div>
+
+      <div class="ui container" id="form-container">
+        <div id="checkout">
           <button
             class="ui teal labeled icon button"
             type="submit"
             id="checkout-button"
+            onclick="checkoutSTATE()"
           >
             <i class="cart icon"></i>
             Checkout
           </button>
-        </form>
+        </div>
       </div>
     </div>
 
     <br />
     <br />
 
-    <div class="ui container">
-      <div class="ui feed">
+    <div class="ui container" id="feed-container">
+      <!-- <div class="ui feed">
         <div class="event" onclick="alert('yes')" style="cursor: pointer">
           <div class="label">
             <i class="dollar green icon"></i>
@@ -103,9 +107,10 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
+    <script src="./cart.js"></script>
     <script src="/modules/jquery"></script>
     <script src="/modules/semantic/js"></script>
   </body>

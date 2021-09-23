@@ -1,8 +1,10 @@
 [
   {
-    "id": 1,
-    "img": "sample img",
-    "name": "name",
-    "desc": "sample desc"
+    "id": "prod_KH2x8O7WhUwlng",
+    "price": "price_1JcUrcFayxrrdcjLfwmE0549"
+  },
+  {
+    "id": "prod_KHVG5QS3InF53F",
+    "price": "price_1JcwFlFayxrrdcjLIb8XTBcD"
   }
 ]
